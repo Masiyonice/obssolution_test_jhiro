@@ -1,9 +1,9 @@
 package com.obs.test.service;
 
-import com.obs.test.dto.ItemSubmitDTO;
-import org.springframework.stereotype.Service;
+import com.obs.test.dto.ItemDTO;
 
 
 public interface ItemService {
-    ItemSubmitDTO createData(ItemSubmitDTO request);
+    ItemDTO createData(ItemDTO request);
+    ItemDTO getDataById(Integer id);
 }
