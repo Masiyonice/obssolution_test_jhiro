@@ -2,6 +2,7 @@ package com.obs.test.service.implementation;
 
 import com.obs.test.dto.ItemDTO;
 import com.obs.test.dto.RequestInventoryCreate;
+import com.obs.test.dto.ResponseInventoryDTO;
 import com.obs.test.entity.Inventory;
 import com.obs.test.entity.Item;
 import com.obs.test.mapper.InventoryMapper;
@@ -28,5 +29,11 @@ public class InventoryServiceImpl implements InventoryService {
         Inventory entity1 = InventoryMapper.toEntity(request, entity);
         inventoryReporsitory.save(entity1);
         return "success";
+    }
+
+    @Override
+    public ResponseInventoryDTO getDataById(Integer id) {
+        Inventory dataFound = inventoryReporsitory.findById(id).orElseThrow(() -> new RuntimeException("Data not found"));
+        return InventoryMapper.toDTO(dataFound);
     }
 }
