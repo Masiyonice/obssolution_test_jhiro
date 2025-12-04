@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     @Override
     public DataOrderWithTotalDTO getMainPage(Integer page, Integer size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page - 1, size);
         Page<Order> all = orderRepository.findAll(pageable);
         return DataOrderWithTotalDTO.builder()
                 .data(all.map(order -> {
@@ -161,6 +161,7 @@ public class OrderServiceImpl implements OrderService {
                     .build();
             inventoryService.createDataInventory(addRequest);
         }
-
+        existingOrder.setQuantity(request.getQuantity());
+        orderRepository.save(existingOrder);
     }
 }
