@@ -47,7 +47,7 @@ public class ItemController {
                 .data(mainPage.getItems())
                 .message("Main page items retrieved successfully. Total pages: " + mainPage.getTotalPages())
                 .statusCode(200)
-                .totalItems(mainPage.getTotalPages())
+                .totalPages(mainPage.getTotalPages())
                 .build();
         return ResponseEntity.ok(response);
     }

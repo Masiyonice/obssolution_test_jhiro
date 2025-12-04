@@ -28,7 +28,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public String createDataInventory(RequestInventoryCreate request) {
-        ItemDTO dataById = itemService.getDataById(request.getId());
+        ItemDTO dataById = itemService.getDataById(request.getItemId());
         Item entity = ItemMapper.toEntity(dataById);
         Inventory entity1 = InventoryMapper.toEntity(request, entity);
         inventoryReporsitory.save(entity1);

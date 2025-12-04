@@ -20,7 +20,7 @@ public class InventoryController {
 
     @PostMapping("/create")
     public ResponseEntity<GenericResponseDTO<String>> createInventory(@RequestBody RequestInventoryCreate request) {
-        String result = inventoryService.createDataInventory(null);
+        String result = inventoryService.createDataInventory(request);
         GenericResponseDTO<String> response = GenericResponseDTO.<String>builder()
                 .data(result)
                 .message("Inventory created successfully")
@@ -50,7 +50,7 @@ public class InventoryController {
                 .data(data)
                 .message(HttpStatus.ACCEPTED.getReasonPhrase())
                 .statusCode(200)
-                .totalItems(totalData)
+                .totalPages(totalData)
                 .build();
         return ResponseEntity.ok(response);
     }

@@ -16,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq_gen")
+    @SequenceGenerator(name = "item_seq_gen", sequenceName = "item_seq", allocationSize = 1)
     private Integer id;
     @NotNull(message = "Name cannot be null")
     private String name;

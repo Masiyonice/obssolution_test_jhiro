@@ -9,5 +9,5 @@ public class GenericResponseDTO<T> {
     private String message;
     private T data;
     private Integer statusCode;
-    private Integer totalItems;
+    private Integer totalPages;
 }
