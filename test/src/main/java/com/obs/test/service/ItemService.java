@@ -9,4 +9,5 @@ public interface ItemService {
     ItemDTO getDataById(Integer id);
     DataItemWithTotalDTO getMainPage(Integer page, Integer size);
     ItemDTO updateData(ItemDTO request);
+    void deleteData(Integer id);
 }

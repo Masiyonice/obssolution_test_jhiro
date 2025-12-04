@@ -66,7 +66,7 @@ public class InventoryController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<GenericResponseDTO<String>> deleteInventory(@PathVariable Integer id) {
         inventoryService.delete(id);
         GenericResponseDTO<String> response = GenericResponseDTO.<String>builder()

@@ -62,4 +62,15 @@ public class ItemController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<GenericResponseDTO<String>> deleteItem(@PathVariable Integer id) {
+        itemService.deleteData(id);
+        GenericResponseDTO<String> response = GenericResponseDTO.<String>builder()
+                .data("Item deleted successfully")
+                .message("Item deleted successfully")
+                .statusCode(200)
+                .build();
+        return ResponseEntity.ok(response);
+    }
 }
