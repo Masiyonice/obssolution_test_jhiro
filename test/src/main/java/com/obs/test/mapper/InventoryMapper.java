@@ -27,11 +27,11 @@ public class InventoryMapper {
                 .build();
     }
 
-    public static RequestInventoryCreate createFromOrder(Order order){
+    public static RequestInventoryCreate createFromOrder(Order order, TypeTransaction typeTransaction){
         return RequestInventoryCreate.builder()
                 .itemId(order.getItem().getId())
                 .qty(order.getQuantity())
-                .typeTransaction(TypeTransaction.W)
+                .typeTransaction(typeTransaction)
                 .build();
     }
 }
