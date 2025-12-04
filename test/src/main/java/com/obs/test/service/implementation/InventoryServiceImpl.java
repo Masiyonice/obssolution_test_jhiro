@@ -54,5 +54,16 @@ public class InventoryServiceImpl implements InventoryService {
                 .build();
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public String update(RequestInventoryCreate request) {
+        inventoryReporsitory.findById(request.getId()).orElseThrow(() -> new RuntimeException("Data not found"));
+        ItemDTO dataById = itemService.getDataById(request.getId());
+        Item entity = ItemMapper.toEntity(dataById);
+        Inventory entity1 = InventoryMapper.toEntity(request, entity);
+        inventoryReporsitory.save(entity1);
+        return "data updated successfully";
+    }
+
 
 }

@@ -21,7 +21,7 @@ public class InventoryMapper {
                 .id(inventory.getId())
                 .item(ItemMapper.toDTO(inventory.getItem()))
                 .qty(inventory.getQty())
-                .typeTransaction(inventory.getTypeTransaction())
+                .typeTransaction(inventory.getTypeTransaction().getDescription())
                 .build();
     }
 }

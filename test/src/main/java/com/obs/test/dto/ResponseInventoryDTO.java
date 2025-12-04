@@ -14,5 +14,5 @@ public class ResponseInventoryDTO {
     private Integer id;
     private ItemDTO item;
     private Integer qty;
-    private TypeTransaction typeTransaction;
+    private String typeTransaction;
 }

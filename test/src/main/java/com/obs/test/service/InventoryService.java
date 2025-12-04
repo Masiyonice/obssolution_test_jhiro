@@ -10,4 +10,5 @@ public interface InventoryService {
     String createDataInventory(RequestInventoryCreate request);
     ResponseInventoryDTO getDataById(Integer id);
     DataInventoryWithTotalData getAllDataInventory(Integer page, Integer size);
+    String update(RequestInventoryCreate request);
 }
