@@ -51,4 +51,15 @@ public class ItemController {
                 .build();
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<GenericResponseDTO<ItemDTO>> updateItem(@RequestBody ItemDTO request) {
+        ItemDTO updatedItem = itemService.updateData(request);
+        GenericResponseDTO<ItemDTO> response = GenericResponseDTO.<ItemDTO>builder()
+                .data(updatedItem)
+                .message("Item updated successfully")
+                .statusCode(200)
+                .build();
+        return ResponseEntity.ok(response);
+    }
 }

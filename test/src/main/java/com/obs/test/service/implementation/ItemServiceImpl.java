@@ -49,4 +49,14 @@ public class ItemServiceImpl implements ItemService {
                 .build();
         return result;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ItemDTO updateData(ItemDTO request) {
+        Item itemNotFound = itemRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Item not found"));
+        itemNotFound.setName(request.getName());
+        itemNotFound.setPrice(request.getPrice());
+        Item updatedItem = itemRepository.save(itemNotFound);
+        return request;
+    }
 }
