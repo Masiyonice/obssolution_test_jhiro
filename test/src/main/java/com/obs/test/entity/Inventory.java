@@ -19,7 +19,7 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inventory_seq_gen")
     @SequenceGenerator(name = "inventory_seq_gen", sequenceName = "inventory_seq", allocationSize = 1)
     private Integer id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
     @NotNull
     private Item item;
