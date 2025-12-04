@@ -6,7 +6,6 @@ import com.obs.test.dto.ResponseOrderDTO;
 import com.obs.test.service.OrderService;
 import com.obs.test.utils.GenericResponseDTO;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
