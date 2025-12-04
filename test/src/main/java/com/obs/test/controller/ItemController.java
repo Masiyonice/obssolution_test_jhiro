@@ -1,11 +1,14 @@
 package com.obs.test.controller;
 
+import com.obs.test.dto.DataItemWithTotalDTO;
 import com.obs.test.dto.ItemDTO;
 import com.obs.test.service.ItemService;
 import com.obs.test.utils.GenericResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/items")
@@ -32,6 +35,19 @@ public class ItemController {
                 .data(item)
                 .message("Item retrieved successfully")
                 .statusCode(200)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getMainPage")
+    public ResponseEntity<GenericResponseDTO<List<ItemDTO>>> getMainPage(@RequestParam Integer page,
+                                                                          @RequestParam Integer size) {
+        DataItemWithTotalDTO mainPage = itemService.getMainPage(page, size);
+        GenericResponseDTO<List<ItemDTO>> response = GenericResponseDTO.<List<ItemDTO>>builder()
+                .data(mainPage.getItems())
+                .message("Main page items retrieved successfully. Total pages: " + mainPage.getTotalPages())
+                .statusCode(200)
+                .totalItems(mainPage.getTotalPages())
                 .build();
         return ResponseEntity.ok(response);
     }
