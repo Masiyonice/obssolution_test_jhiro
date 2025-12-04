@@ -4,6 +4,8 @@ import com.obs.test.dto.RequestInventoryCreate;
 import com.obs.test.dto.ResponseInventoryDTO;
 import com.obs.test.entity.Inventory;
 import com.obs.test.entity.Item;
+import com.obs.test.entity.Order;
+import com.obs.test.utils.TypeTransaction;
 
 public class InventoryMapper {
 
@@ -22,6 +24,14 @@ public class InventoryMapper {
                 .item(ItemMapper.toDTO(inventory.getItem()))
                 .qty(inventory.getQty())
                 .typeTransaction(inventory.getTypeTransaction().getDescription())
+                .build();
+    }
+
+    public static RequestInventoryCreate createFromOrder(Order order, TypeTransaction typeTransaction){
+        return RequestInventoryCreate.builder()
+                .itemId(order.getItem().getId())
+                .qty(order.getQuantity())
+                .typeTransaction(typeTransaction)
                 .build();
     }
 }

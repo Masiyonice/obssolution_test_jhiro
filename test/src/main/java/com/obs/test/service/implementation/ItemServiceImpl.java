@@ -65,4 +65,9 @@ public class ItemServiceImpl implements ItemService {
         Item itemNotFound = itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
         itemRepository.delete(itemNotFound);
     }
+
+    @Override
+    public Item getItemForService(Integer id) {
+        return itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+    }
 }

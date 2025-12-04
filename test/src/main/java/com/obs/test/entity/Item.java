@@ -23,6 +23,8 @@ public class Item {
     private String name;
     @NotNull(message = "Price cannot be null")
     private Integer price;
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Inventory> inventories;
+    @OneToMany(mappedBy = "item", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Order> orders;
 }
