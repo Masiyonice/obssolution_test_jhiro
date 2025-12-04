@@ -95,8 +95,16 @@ public class OrderServiceImpl implements OrderService {
         return "Sucess update order with order no "+request.getId();
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteOrder(String orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+        RequestInventoryCreate addBackInventory = InventoryMapper.createFromOrder(order, TypeTransaction.T);
+        inventoryService.createDataInventory(addBackInventory);
+        orderRepository.delete(order);
+    }
+
     private void adjustmentIfItemChange(Order existingOrder, RequestOrderDTO request) throws CustomException {
-        List<Inventory> inventories = existingOrder.getItem().getInventories();
         //add back previous item qty
         RequestInventoryCreate previousItem = InventoryMapper.createFromOrder(existingOrder, TypeTransaction.T);
         inventoryService.createDataInventory(previousItem);

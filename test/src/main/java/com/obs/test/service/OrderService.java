@@ -9,4 +9,5 @@ public interface OrderService {
     ResponseOrderDTO getOrderById(String orderId);
     DataOrderWithTotalDTO getMainPage(Integer page, Integer size);
     String updateOrder(RequestOrderDTO request) throws Exception;
+    void deleteOrder(String orderId);
 }
