@@ -47,7 +47,7 @@ public class ItemController {
                 .data(mainPage.getItems())
                 .message("Main page items retrieved successfully. Total pages: " + mainPage.getTotalPages())
                 .statusCode(200)
-                .totalItems(mainPage.getTotalPages())
+                .totalPages(mainPage.getTotalPages())
                 .build();
         return ResponseEntity.ok(response);
     }
@@ -58,6 +58,17 @@ public class ItemController {
         GenericResponseDTO<ItemDTO> response = GenericResponseDTO.<ItemDTO>builder()
                 .data(updatedItem)
                 .message("Item updated successfully")
+                .statusCode(200)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<GenericResponseDTO<String>> deleteItem(@PathVariable Integer id) {
+        itemService.deleteData(id);
+        GenericResponseDTO<String> response = GenericResponseDTO.<String>builder()
+                .data("Item deleted successfully")
+                .message("Item deleted successfully")
                 .statusCode(200)
                 .build();
         return ResponseEntity.ok(response);

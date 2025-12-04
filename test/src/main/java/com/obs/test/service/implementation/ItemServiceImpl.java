@@ -59,4 +59,10 @@ public class ItemServiceImpl implements ItemService {
         Item updatedItem = itemRepository.save(itemNotFound);
         return request;
     }
+
+    @Override
+    public void deleteData(Integer id) {
+        Item itemNotFound = itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        itemRepository.delete(itemNotFound);
+    }
 }
