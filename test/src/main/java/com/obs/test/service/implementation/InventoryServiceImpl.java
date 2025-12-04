@@ -1,5 +1,6 @@
 package com.obs.test.service.implementation;
 
+import com.obs.test.dto.DataInventoryWithTotalData;
 import com.obs.test.dto.ItemDTO;
 import com.obs.test.dto.RequestInventoryCreate;
 import com.obs.test.dto.ResponseInventoryDTO;
@@ -11,6 +12,9 @@ import com.obs.test.repository.InventoryReporsitory;
 import com.obs.test.service.InventoryService;
 import com.obs.test.service.ItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +35,24 @@ public class InventoryServiceImpl implements InventoryService {
         return "success";
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ResponseInventoryDTO getDataById(Integer id) {
         Inventory dataFound = inventoryReporsitory.findById(id).orElseThrow(() -> new RuntimeException("Data not found"));
         return InventoryMapper.toDTO(dataFound);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public DataInventoryWithTotalData getAllDataInventory(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of( page - 1, size);
+        Page<Inventory> all = inventoryReporsitory.findAll(pageable);
+        int totalPages = all.getTotalPages();
+        return DataInventoryWithTotalData.builder()
+                .data(all.map(InventoryMapper::toDTO).toList())
+                .totalData(totalPages)
+                .build();
+    }
+
+
 }
