@@ -56,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
         Item itemNotFound = itemRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("Item not found"));
         itemNotFound.setName(request.getName());
         itemNotFound.setPrice(request.getPrice());
-        Item updatedItem = itemRepository.save(itemNotFound);
+        itemRepository.save(itemNotFound);
         return request;
     }
 
