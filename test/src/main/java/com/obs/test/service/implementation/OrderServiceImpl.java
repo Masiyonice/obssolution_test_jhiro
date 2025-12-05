@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
         }else{
             adjustmentIfQuantityChange(order, request);
         }
-        return "Sucess update order with order no "+request.getId();
+        return "Success update order with order no "+request.getId();
     }
 
     @Transactional(rollbackFor = Exception.class)

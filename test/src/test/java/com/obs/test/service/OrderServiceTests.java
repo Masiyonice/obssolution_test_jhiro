@@ -119,6 +119,219 @@ public class OrderServiceTests {
         verify(orderRepository, times(0)).save(any(Order.class));
     }
 
+    @Test
+    public void updateOrder_IfItemChange_PositiveCase() throws Exception {
+        RequestOrderDTO request = RequestOrderDTO.builder()
+                .id("O1")
+                .itemId(2)
+                .quantity(5)
+                .build();
+        Inventory existingInventory =  Inventory.builder()
+                .id(1)
+                .item(null)
+                .qty(10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item existingItem = Item.builder()
+                .id(1)
+                .name("Existing Item")
+                .price(500)
+                .inventories(List.of(existingInventory))
+                .build();
+        Order existingOrder = Order.builder()
+                .orderNo("O1")
+                .item(existingItem)
+                .quantity(3)
+                .price(500)
+                .build();
+        when(orderRepository.findById("O1")).thenReturn(java.util.Optional.of(existingOrder));
+        Inventory newInventory =  Inventory.builder()
+                .id(2)
+                .item(null)
+                .qty(10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item newItem = Item.builder()
+                .id(2)
+                .name("New Item")
+                .price(600)
+                .inventories(List.of(newInventory))
+                .build();
+        when(itemService.getItemForService(2)).thenReturn(newItem);
+        when(inventoryService.createDataInventory(any())).thenReturn("success");
+        when(orderRepository.save(any(Order.class))).thenReturn(existingOrder);
+        String result = orderService.updateOrder(request);
+        assertEquals("Success update order with order no O1", result);
+        verify(orderRepository, times(1)).findById("O1");
+        verify(itemService, times(1)).getItemForService(2);
+        verify(inventoryService, times(2)).createDataInventory(any());
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
 
+    @Test
+    public void updateOrder_IfItemChange_NegativeCase_StockNotEnough() {
+        RequestOrderDTO request = RequestOrderDTO.builder()
+                .id("O1")
+                .itemId(2)
+                .quantity(15)
+                .build();
+        Inventory existingInventory =  Inventory.builder()
+                .id(1)
+                .item(null)
+                .qty(10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item existingItem = Item.builder()
+                .id(1)
+                .name("Existing Item")
+                .price(500)
+                .inventories(List.of(existingInventory))
+                .build();
+        Order existingOrder = Order.builder()
+                .orderNo("O1")
+                .item(existingItem)
+                .quantity(3)
+                .price(500)
+                .build();
+        when(orderRepository.findById("O1")).thenReturn(java.util.Optional.of(existingOrder));
+        Inventory newInventory =  Inventory.builder()
+                .id(2)
+                .item(null)
+                .qty(10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item newItem = Item.builder()
+                .id(2)
+                .name("New Item")
+                .price(600)
+                .inventories(List.of(newInventory))
+                .build();
+        when(itemService.getItemForService(2)).thenReturn(newItem);
+        try {
+            orderService.updateOrder(request);
+        } catch (Exception e) {
+            assertEquals("Stock is not enough", e.getMessage());
+        }
+        verify(orderRepository, times(1)).findById("O1");
+        verify(itemService, times(1)).getItemForService(2);
+        verify(inventoryService, times(0)).createDataInventory(any());
+        verify(orderRepository, times(0)).save(any(Order.class));
+    }
+
+    @Test
+    public void updateOrder_IfItemChange_NegativeCase_InventoryEmpty() {
+        RequestOrderDTO request = RequestOrderDTO.builder()
+                .id("O1")
+                .itemId(2)
+                .quantity(5)
+                .build();
+        Inventory existingInventory =  Inventory.builder()
+                .id(1)
+                .item(null)
+                .qty(10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item existingItem = Item.builder()
+                .id(1)
+                .name("Existing Item")
+                .price(500)
+                .inventories(List.of(existingInventory))
+                .build();
+        Order existingOrder = Order.builder()
+                .orderNo("O1")
+                .item(existingItem)
+                .quantity(3)
+                .price(500)
+                .build();
+        when(orderRepository.findById("O1")).thenReturn(java.util.Optional.of(existingOrder));
+        Item newItem = Item.builder()
+                .id(2)
+                .name("New Item")
+                .price(600)
+                .inventories(List.of())
+                .build();
+        when(itemService.getItemForService(2)).thenReturn(newItem);
+        try {
+            orderService.updateOrder(request);
+        } catch (Exception e) {
+            assertEquals("Inventory is empty", e.getMessage());
+        }
+        verify(orderRepository, times(1)).findById("O1");
+        verify(itemService, times(1)).getItemForService(2);
+        verify(orderRepository, times(0)).save(any(Order.class));
+    }
+
+    @Test
+    public void updateOrder_IfQuantityChange_PositiveCase() throws Exception {
+        RequestOrderDTO request = RequestOrderDTO.builder()
+                .id("O1")
+                .itemId(1)
+                .quantity(8)
+                .build();
+        Inventory existingInventory =  Inventory.builder()
+                .id(1)
+                .item(null)
+                .qty(10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item existingItem = Item.builder()
+                .id(1)
+                .name("Existing Item")
+                .price(500)
+                .inventories(List.of(existingInventory))
+                .build();
+        Order existingOrder = Order.builder()
+                .orderNo("O1")
+                .item(existingItem)
+                .quantity(5)
+                .price(500)
+                .build();
+        when(orderRepository.findById("O1")).thenReturn(java.util.Optional.of(existingOrder));
+//        doNothing().when(inventoryService).createDataInventory(any());
+        when(orderRepository.save(any(Order.class))).thenReturn(existingOrder);
+        String result = orderService.updateOrder(request);
+        assertEquals("Success update order with order no O1", result);
+        verify(orderRepository, times(1)).findById("O1");
+        verify(itemService, times(0)).getItemForService(anyInt());
+        verify(inventoryService, times(1)).createDataInventory(any());
+        verify(orderRepository, times(1)).save(any(Order.class));
+    }
+
+    @Test
+    public void updateOrder_IfQuantityChange_NegativeCase_StockNotEnough() {
+        RequestOrderDTO request = RequestOrderDTO.builder()
+                .id("O1")
+                .itemId(1)
+                .quantity(15)
+                .build();
+        Inventory existingInventory =  Inventory.builder()
+                .id(1)
+                .item(null)
+                .qty(9)  // Changed to 9 to make stock insufficient (total=9, diff=10)
+                .typeTransaction(TypeTransaction.T)
+                .build();
+        Item existingItem = Item.builder()
+                .id(1)
+                .name("Existing Item")
+                .price(500)
+                .inventories(List.of(existingInventory))
+                .build();
+        Order existingOrder = Order.builder()
+                .orderNo("O1")
+                .item(existingItem)
+                .quantity(5)
+                .price(500)
+                .build();
+        when(orderRepository.findById("O1")).thenReturn(java.util.Optional.of(existingOrder));
+        try {
+            orderService.updateOrder(request);
+        } catch (Exception e) {
+            assertEquals("Stock is not enough", e.getMessage());
+        }
+        verify(orderRepository, times(1)).findById("O1");
+        verify(itemService, times(0)).getItemForService(anyInt());
+        verify(inventoryService, times(0)).createDataInventory(any());
+        verify(orderRepository, times(0)).save(any(Order.class));
+    }
 
 }
